@@ -1,24 +1,30 @@
 import { StyleSheet } from 'react-native';
 
 const Styles = StyleSheet.create({
+  input: {
+    height: 56,
+    padding: 16,
+    fontSize: 16,
+    borderRadius: 5,
+
+    color: '#fdfcfe',
+    backgroundColor: '#1f1e25',
+  },
   container: {
     flex: 1,
+    padding: 24,
     backgroundColor: '#131016',
   },
-  text: {
-    padding: 16,
+  eventDate: {
+    fontSize: 16,
+    color: '#6b6b6b',
+  },
+  eventName: {
     fontSize: 24,
     marginTop: 48,
-    marginLeft: 16,
-    marginRight: 16,
-    color: '#fff',
+    color: '#fdfcfe',
     fontWeight: 'bold',
-    textAlign: 'center',
-
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#fff',
-  }
+  },
 });
 
 export default Styles;
