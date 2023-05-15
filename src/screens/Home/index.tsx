@@ -1,27 +1,26 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 
 import { Participant } from '../../components/Participant';
 import { styles } from './styles';
 
 export default function Home() {
-  const [participants, setParticipants] = useState<Array<string>>([
-    'Barbara Pinheiro',
-    'Patton Hoffiman',
-    'Raveninha',
-    'Barbara Pinheiro',
-    'Patton Hoffiman',
-    'Raveninha',
-    'Barbara Pinheiro',
-    'Patton Hoffiman',
-    'Raveninha'
-  ]);
+  const [inputValue, setInputValue] = useState('');
+  const [participants, setParticipants] = useState<Array<string>>([]);
   
-  const handleParticipantAdd = useCallback(() => {
-    if (participants.includes('Patton Hoffiman')) {
+  const handleParticipantAdd = useCallback((name: string) => {
+    if (name === '') {
+      return Alert.alert('Campo Vazio', 'Você precisa inserir um participante!');
+    }
+
+    if (participants.includes(name)) {
+      setInputValue('');
       return Alert.alert("Participante Existente", "Já existe um participante na lista com esse nome!");
     }
-  }, []);
+
+    setParticipants(prev => [...prev, name]);
+    setInputValue('');
+  }, [participants]);
 
   const handleParticipantRemove = useCallback((name: string) => {
     Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
@@ -31,10 +30,15 @@ export default function Home() {
       },
       {
         text: 'Sim',
-        onPress: () => Alert.alert('Participante Removido!'),
+        onPress: () => removeParticipant(name),
       },
     ]);
-  }, []);
+  }, [participants]);
+
+  const removeParticipant = useCallback((name: string) => {
+    const filteredParticipants = participants.filter((participant) => participant !== name);
+    setParticipants(filteredParticipants);
+  }, [participants]);
 
   return (
     <View style={styles.container}>
@@ -48,12 +52,17 @@ export default function Home() {
 
       <View style={styles.form}>
         <TextInput
+          value={inputValue}
           style={styles.input}
           placeholderTextColor="#6b6b6b"
           placeholder='Nome do participante'
+          onChangeText={(text) => setInputValue(text)}
         />
 
-        <TouchableOpacity style={styles.button} onPress={() => handleParticipantAdd()}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleParticipantAdd(inputValue)}
+        >
           <Text style={styles.buttonText}>
             +
           </Text>
