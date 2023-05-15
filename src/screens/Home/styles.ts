@@ -43,6 +43,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  removeAllButton: {
+    height: 56,
+    width: '100%',
+
+    borderRadius: 5,
+    backgroundColor: '#e23c44',
+
+    marginTop: 16,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
   buttonText: {
     fontSize: 24,
     color: '#fdfcfe',

@@ -8,6 +8,35 @@ export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [participants, setParticipants] = useState<Array<string>>([]);
   
+  // * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  const clearAllParticipants = useCallback(() => {
+    setParticipants([]);
+  }, []);
+
+  // ? Method for Remove Participant from List.
+  const removeParticipant = useCallback((name: string) => {
+    setParticipants(prev => prev.filter((participant) => participant !== name));
+  }, [participants]);
+
+  // * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ? Handlers.
+
+  // ? Handle for Clear All Participants.
+  const handleClearAll = useCallback(() => {
+    Alert.alert('Remover Todos', 'Deseja remover todos os participantes?', [
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim',
+        onPress: () => clearAllParticipants(),
+      }
+    ]);
+  }, []);
+
+  // ? Handle for Add Participant to List.
   const handleParticipantAdd = useCallback((name: string) => {
     if (name === '') {
       return Alert.alert('Campo Vazio', 'Você precisa inserir um participante!');
@@ -22,6 +51,7 @@ export default function Home() {
     setInputValue('');
   }, [participants]);
 
+  // ? Handle for Remove Participant from List.
   const handleParticipantRemove = useCallback((name: string) => {
     Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
       {
@@ -35,10 +65,7 @@ export default function Home() {
     ]);
   }, [participants]);
 
-  const removeParticipant = useCallback((name: string) => {
-    const filteredParticipants = participants.filter((participant) => participant !== name);
-    setParticipants(filteredParticipants);
-  }, [participants]);
+  // * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return (
     <View style={styles.container}>
@@ -83,6 +110,17 @@ export default function Home() {
           <Text style={styles.emptyListText}>Não existem participantes!</Text>
         )}
       />
+
+      {participants.length > 0 && (
+        <TouchableOpacity
+          onPress={handleClearAll}
+          style={styles.removeAllButton}
+        >
+          <Text style={styles.buttonText}>
+            Remover Todos
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   )
 };
